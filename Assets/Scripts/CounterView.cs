@@ -6,21 +6,21 @@ using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCou
 
 public class CounterView : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _counterText;
+    [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private CoroutineCounter _coroutineCounter;
 
     private void OnEnable()
     {
-        _coroutineCounter.CounterChanged += DisplayCounter;
+        _coroutineCounter.Changed += Display;
     }
 
     private void OnDisable()
     {
-        _coroutineCounter.CounterChanged -= DisplayCounter;
+        _coroutineCounter.Changed -= Display;
     }
 
-    private void DisplayCounter(float newCounter)
+    private void Display(float value)
     {
-        _counterText.text = "—четчик: " + newCounter;
+        _text.text = "—четчик: " + value;
     }
 }

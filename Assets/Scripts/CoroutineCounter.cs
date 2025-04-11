@@ -9,52 +9,52 @@ public class CoroutineCounter : MonoBehaviour
     private int _counter = 0;
     private int _step = 1;
     private float _cooldownInSeconds = 0.5f;
-    private bool isCounting = false;
+    private bool isActive = false;
 
-    private Coroutine countingCoroutine;
+    private Coroutine coroutine;
 
-    public event Action<float> CounterChanged;
+    public event Action<float> Changed;
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (isCounting)
+            if (isActive)
             {
-                StopCounting();
+                StopCoroutine();
             }
             else
             {
-                StartCounting();
+                StartCoroutine();
             }
         }
     }
 
-    private void StartCounting()
+    private void StartCoroutine()
     {
-        isCounting = true;
-        countingCoroutine = StartCoroutine(CountCoroutine());
+        isActive = true;
+        coroutine = StartCoroutine(Coroutine());
         Debug.Log("Счетчик запущен");
     }
 
-    private void StopCounting()
+    private void StopCoroutine()
     {
-        if (countingCoroutine != null)
+        if (coroutine != null)
         {
-            StopCoroutine(countingCoroutine);
+            StopCoroutine(coroutine);
         }
 
-        isCounting = false;
+        isActive = false;
         Debug.Log("Счетчик остановлен. Текущее значение: " + _counter);
     }
 
-    private IEnumerator CountCoroutine()
+    private IEnumerator Coroutine()
     {
         while (true)
         {
             _counter += _step;
             Debug.Log("Текущее значение счетчика: " + _counter);
-            CounterChanged?.Invoke(_counter);
+            Changed?.Invoke(_counter);
             
             yield return new WaitForSeconds(_cooldownInSeconds);
         }
